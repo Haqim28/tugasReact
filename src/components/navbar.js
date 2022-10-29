@@ -323,7 +323,7 @@ function PartnerPage() {
   };
 
   const handleHome = () => {
-    navigate("/");
+    navigate("/income");
   };
 
   const handleProfile = () => {

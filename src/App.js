@@ -51,9 +51,9 @@ function App() {
     if (state.isLogin === false && !isLoading) {
       navigate("/");
     } else {
-      if (state.user.status === "partner") {
+      if (state.user.role === "partner") {
         navigate("/income");
-      } else if (state.user.status === "customer") {
+      } else if (state.user.role === "customer") {
         navigate("/");
       }
     }
