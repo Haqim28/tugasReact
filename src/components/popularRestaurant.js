@@ -1,34 +1,56 @@
 import "./assets/css/popular.css"
 import Card from 'react-bootstrap/Card';
-import Bk from "./assets/bk.png";
-import Sb from "./assets/starbuck.png";
-import Kfc from "./assets/kfc.png";
-import Jco from "./assets/jco.png";
+import {API} from "../config/api"
+import { useContext , useEffect, useState } from "react";
+import { UserContext } from "../context/userContext";
+import Profile from "./assets/profile.png";
+import { useNavigate } from "react-router-dom";
+
 
 
 function PopularRestaurant() {
   
-    const restaurants = ([
-        {image: Bk , nama: 'BurgerKing'},
-        {image: Sb , nama: 'Starbucks'},
-        {image: Kfc , nama: 'KFC'},
-        {image: Jco , nama: 'JCO'}, 
-      ]);
+    /// INI UNTUK Restaurant 
+    const [profile, setProfile] = useState(null)
+    const getProfile = async() => {
+        try {
+            const response = await API.get('/user/role/partner');
+             console.log(response.data.data);
+            setProfile(response.data.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(()=> {
+        getProfile()
+    }, [])
+
+
+    ////ini untuk klik ke detail resto
+    const navigate = useNavigate()
+    const handleGoToDetail = (id) => {
+        navigate(`resto/${id}`)
+    };
+
+    
     return (
      <div className="container">
         <div className="container row text-center">
         <h2 className="  mb-4 mt-5 font-weight-bold col-md-text-left col-lg-6 col-md-12">Popular Restaurant</h2>
            <div className="row justify-content-md-start col-lg-12 ml-5">
-           {restaurants.map((restaurant) => (
-          
-                 <Card style={{ width: '14rem'  }} className=" card ml-2 border mt-2 p-4">
+            {profile?.map((restaurant) => (  
+                 <Card style={{ width: '14rem'  }} 
+                 item={restaurant} 
+                 key={restaurant.id}
+                 onClick={() => handleGoToDetail(restaurant.id)}
+                 className=" card ml-2 border mt-2 p-4">
                     <div className="d-flex">
-                    <img src={restaurant.image} alt=""  className="img fluid "></img>
-                    <h5 className="text-center pt-4 px-2  font-weight-bold titlePopular"> {restaurant.nama} </h5>
+                    <img src={!restaurant?.image  ?  Profile : "http://localhost:5000/uploads/" + restaurant.image } alt=""  width={50} height= {70}className="img fluid "></img>
+                    <h5 className="text-center pt-4 px-2  font-weight-bold titlePopular"> {restaurant.name} </h5>
 
                     </div>
                 </Card>
-            ))}
+             ))}    
             
         </div>
             

@@ -1,7 +1,7 @@
 import Vespa from "./assets/vespa.png";
 import React, { useState } from 'react';
 import "./assets/css/navbar.css";
-import Register from "./Modal/Register";
+import Register from "./auth/Register";
 import keranjang from "./assets/keranjang.png";
 import Profil from "./assets/profil.png";
 import Profile from "./assets/profile.png";

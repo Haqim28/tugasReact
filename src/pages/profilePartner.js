@@ -4,13 +4,23 @@ import Finish from "../components/assets/Finsihed.png"
 import "../components/assets/css/profile.css"
 import Geprek from '../components/assets/menu/sambelMatah.png'
 import {useNavigate} from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../context/userContext";
+import {useQuery} from "react-query"
+import {API} from "../config/api"
 
 function ProfilePartner() {
    const navigate = useNavigate()
-
    const handleEditProfile = () => {
       navigate('/edit-profile-partner')
    }
+
+   const [state] = useContext (UserContext)
+   let id = state.user.id
+   const { data: profile } = useQuery("profileCache", async () => {
+    const response = await API.get(`/user/${id}`);
+    return response.data.data;
+  });
   
     return (
      <div className="container">
@@ -19,21 +29,29 @@ function ProfilePartner() {
                 <div className="mb-3 title-edit">Profile Partner</div>
                 <div className="d-md-flex">
                     <div className="justify-content-start">
-                        <img src={Geprek} alt=''></img>
+                    <img
+                src={
+                  profile?.image === "http://localhost:5000/uploads/"
+                    ? Geprek
+                    : profile?.image
+                }
+                alt=""
+                width={250}
+              ></img>
                         
                     </div>
                     <div className="justify-content-end ml-3">
                         <div className="mb-3">
                             <h5 className="subtitle-edit">Nama Partner</h5>
-                            <span className="isiProfile-edit">Geprek Bensi</span>
+                            <span className="isiProfile-edit">{profile?.fullname}</span>
                         </div>
                         <div className="mb-3">
                             <h5 className="subtitle-edit">Email</h5>
-                            <span className="isiProfile-edit">bensi@gmail.com</span>
+                            <span className="isiProfile-edit">{profile?.email}</span>
                         </div>
                         <div>
                             <h5 className="subtitle-edit">Phone</h5>
-                            <span className="isiProfile-edit">083823423323</span>
+                            <span className="isiProfile-edit">{profile?.phone}</span>
                         </div>
                     </div>
                 </div>
