@@ -31,8 +31,6 @@ function MenuRestaurant(props) {
         console.log("ini id resto",user)
         console.log("ini id user",state.user.id);
         console.log("ini title",title);
-
-        
       }
 
     return (

@@ -11,7 +11,6 @@ import EditProfilePartner from "./pages/editProfilePartner";
 import ProfilePartner from "./pages/profilePartner";
 import React from "react";
 import IncomeTransaction from "./pages/incomeTransaction";
-import LoginTest from "./loginTest";
 import { API, setAuthToken } from "./config/api";
 import { UserContext } from "./context/userContext";
 import { useContext, useEffect, useState } from "react";

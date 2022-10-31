@@ -1,8 +1,7 @@
 import "./assets/css/popular.css"
 import Card from 'react-bootstrap/Card';
 import {API} from "../config/api"
-import { useContext , useEffect, useState } from "react";
-import { UserContext } from "../context/userContext";
+import {  useEffect, useState } from "react";
 import Profile from "./assets/profile.png";
 import { useNavigate } from "react-router-dom";
 
