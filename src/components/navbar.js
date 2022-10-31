@@ -15,17 +15,16 @@ import { useNavigate } from "react-router-dom";
 import Login from "./assets/Login.png";
 import { UserContext } from "../context/userContext";
 import { useMutation } from "react-query";
-import { API, setAuthToken } from "../config/api";
+import { API } from "../config/api";
 import { Alert } from "react-bootstrap";
 import { useQuery } from "react-query";
 
 
 function Navbar() {
-  let navigate = useNavigate();
   const [state] = useContext(UserContext);
 
   useEffect(() => {
-    console.log("ini state", state);
+    console.log("this state", state);
   }, [state]);
 
   return (
@@ -71,14 +70,20 @@ function PrivatePage(props) {
   // const [profile, setProfile] = useState(null)
   const id = state.user.id
     //to get image for profile navbar
-    const { data: profile } = useQuery("profileCache", async () => {
+    const { data: profile ,isLoading} = useQuery("profileCache", async () => {
       const response = await API.get(`/user/${id}`);
       return response.data.data;
     });
 
+  
+
 
   return (
+      
     <div className="App Container bg-warning ">
+      {isLoading ? 
+      <></>  
+     : <>
       <div className="container">
         <nav className="container navbar navbar-expand-lg bg-warning navbar-light">
           <div
@@ -155,9 +160,11 @@ function PrivatePage(props) {
           </div>
         </nav>
       </div>
-    </div>
+       </>}
+    </div>  
+   
   );
-}
+      }
 
 function GuestPage(props) {
   let navigate = useNavigate();
@@ -216,13 +223,6 @@ function GuestPage(props) {
   const handleHome = () => {
     navigate("/");
   };
-  const [user, setUser] = useState("");
-
-  function getUser(val) {
-    setUser(val.target.value);
-    console.log(user);
-  }
-
   return (
     <div className="App Container bg-warning  ">
       <div className="container ">
@@ -286,7 +286,7 @@ function GuestPage(props) {
                 >
                   <Form.Label></Form.Label>
                   <Form.Control
-                    type="pass"
+                    type="password"
                     placeholder="Password"
                     name="password"
                     value={password}

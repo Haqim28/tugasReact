@@ -10,12 +10,11 @@ import { useNavigate } from "react-router-dom";
 
 function PopularRestaurant() {
   
-    /// INI UNTUK Restaurant 
+
     const [profile, setProfile] = useState(null)
     const getProfile = async() => {
         try {
             const response = await API.get('/user/role/partner');
-             console.log(response.data.data);
             setProfile(response.data.data)
         } catch (error) {
             console.log(error);
@@ -25,14 +24,10 @@ function PopularRestaurant() {
         getProfile()
     }, [])
 
-
-    ////ini untuk klik ke detail resto
     const navigate = useNavigate()
     const handleGoToDetail = (id) => {
         navigate(`resto/${id}`)
     };
-
-    
     return (
      <div className="container">
         <div className="container row text-center">

@@ -1,6 +1,6 @@
 import "./App.css";
 import Navbar from "./components/navbar"; // navbar
-import { Routes, Route, Outlet,Navigate } from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import MenuRestaurant from "./pages/menuRestaurant";
 import Home from "./pages/Home";
 import Profile from "./pages/profile";
@@ -12,28 +12,25 @@ import ProfilePartner from "./pages/profilePartner";
 import React from "react";
 import IncomeTransaction from "./pages/incomeTransaction";
 import LoginTest from "./loginTest";
-// import NavbarTest from './components/navbarTest'
-// import NavbarPartner from './components/navbarPartner'
 import { API, setAuthToken } from "./config/api";
 import { UserContext } from "./context/userContext";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 const PrivateRoute = () => {
-  const [state] = useContext(UserContext)
-  return state.isLogin? <Outlet /> : <Navigate to = "/" />
-}
-
-const CustomerRoute = () => {
-  const [state] = useContext(UserContext)
-  return state.user.role === "customer" ? <Outlet /> : <Navigate to = "/" />
-}
+  const [state] = useContext(UserContext);
+  return state.isLogin ? <Outlet /> : <Navigate to="/" />;
+};
 
 const PartnerRoute = () => {
-  const [state] = useContext(UserContext)
-  return state.user.role === "partner" ? <Outlet /> : <Navigate to = "/income" />
-}
+  const [state] = useContext(UserContext);
+  return state.user.role === "customer" ? <Navigate to="/" /> : <Outlet />;
+};
+
+const CustomerRoute = () => {
+  const [state] = useContext(UserContext);
+  return state.user.role === "partner" ? <Navigate to="/income" /> : <Outlet />;
+};
 
 function App() {
   const [state, dispatch] = useContext(UserContext);
@@ -50,12 +47,6 @@ function App() {
 
     if (state.isLogin === false && !isLoading) {
       navigate("/");
-    } else {
-      if (state.user.role === "partner") {
-        navigate("/income");
-      } else if (state.user.role === "customer") {
-        navigate("/");
-      }
     }
   }, [state]);
 
@@ -81,6 +72,7 @@ function App() {
         type: "USER_SUCCESS",
         payload,
       });
+      console.log(state);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -92,7 +84,6 @@ function App() {
     checkUser();
   }, []);
 
-
   return (
     <div className="App-back">
       <div className="App-back">
@@ -103,21 +94,20 @@ function App() {
             <Navbar />
             <Routes>
               <Route exact path="/" element={<Home />} />
-              <Route exact path="/" element={<PrivateRoute/>}>
-                  <Route exact path="/" element={<Home />} />
-                  <Route exact path="/" element={<CustomerRoute/>}>
-
-                        <Route  path="/resto/:id"    element={<MenuRestaurant />}/>
-                        <Route  path="/cart-order"   element={<CartOrder />}/>
-                        <Route  path="/profile"      element={<Profile />}/>
-                        <Route  path="/edit-profile" element={<EditProfil />}/>
-        
-                  </Route>
-                          <Route  path="/profile-partner"       element={<ProfilePartner     />} />
-                          <Route  path="/edit-profile-partner"  element={<EditProfilePartner />} /> 
-                          <Route  path="/add-product"           element={<AddProduct         />}/> 
-                          <Route  path="/income"                element={<IncomeTransaction  />} /> 
-              </Route> 
+              <Route exact path="/" element={<PrivateRoute />}>
+                <Route exact path="/" element={<PartnerRoute />}>
+                  <Route path="/profile-partner" element={<ProfilePartner />} />
+                  <Route path="/edit-profile-partner" element={<EditProfilePartner />}/>
+                  <Route path="/add-product" element={<AddProduct />} />
+                  <Route path="/income" element={<IncomeTransaction />} />
+                </Route>
+                <Route exact path="/" element={<CustomerRoute />}>
+                  <Route path="/resto/:id" element={<MenuRestaurant />} />
+                  <Route path="/cart-order" element={<CartOrder />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/edit-profile" element={<EditProfil />} />
+                </Route>
+              </Route>
             </Routes>
           </>
         )}

@@ -129,7 +129,7 @@ function Register() {
                 onChange = {handleChange}
               />
             </Form.Group>
-            <button className="btn  btn-lg btn-brown text-white  m-3" variant="primary" size="md" type='submit' >
+            <button className="btn  btn-lg btn-brown text-white  m-3 btn-fluid" variant="primary" size="md" type='submit' >
             Register</button>
           </Form>
         </Modal.Body>
